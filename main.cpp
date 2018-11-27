@@ -6,7 +6,7 @@ int main() {
     trab.readText("otavio.txt");
     
     //trab.printMap();
-    trab.searchWord("nome");
+    trab.searchWord(";");
     return 0;
 }
 

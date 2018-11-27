@@ -15,15 +15,23 @@ void Trabalho_3::readText(char* name) {
             int last = 0;
             for (i = 0; i < line.size() + 1; i++) { 
                 index++;
-                if (line[i] != 32 && line[i] != 0) {
+                if (    (line[i] >= 48 && line[i] <= 57) || 
+                        (line[i] >= 65 && line[i] <= 90) || 
+                        (line[i] >= 97 && line[i] <= 172)) {
                     last++;
-                } else {
+                } 
+                else {
                     std::string copy = line.substr(first, last);
                     if(copy[0] != 32 && copy[0] != 0)
                         addWord(copy, index-last);
                     copy.clear();
                     first = i + 1;
                     last = 0;
+                    if(line[i] != 0 && line[i] != 32){
+                        string aux;
+                        aux = line[i];
+                        addWord(aux, i);
+                    }
                 }
             }
         }
