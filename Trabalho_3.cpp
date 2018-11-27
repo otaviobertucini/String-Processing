@@ -4,14 +4,16 @@ Trabalho_3::Trabalho_3() {
 }
 
 void Trabalho_3::readText(char* name) {
-    ifstream myfile(name);
-    if (myfile.is_open()) {
+    this->name = name;
+    ifstream file(name);
+    if (file.is_open()) {
         std::string line;
         int index = -1;
-        while (getline(myfile, line)) {
+        int i;
+        while (getline(file, line)) {
             int first = 0;
             int last = 0;
-            for (int i = 0; i < line.size() + 1; i++) { 
+            for (i = 0; i < line.size() + 1; i++) { 
                 index++;
                 if (line[i] != 32 && line[i] != 0) {
                     last++;
@@ -25,6 +27,7 @@ void Trabalho_3::readText(char* name) {
                 }
             }
         }
+        last_character = index-1;
     }
     for (int i = 0; i < strings.size(); i++) {
         cout << strings[i] << endl;
@@ -53,6 +56,53 @@ void Trabalho_3::printMap(){
         }
         cout << "\n";
     }
+}
+
+void Trabalho_3::searchWord(string word){
+    vector<int>* indexes;
+    try{
+        indexes = inverted.at(word);
+    }
+    catch(out_of_range){
+        cout << "Palavra não encontrada!" << endl;
+        return;
+    }
+    cout << "Número de ocorrências: " << indexes->size() << endl;
+    cout << "Posição: " << (*indexes)[0] << endl;
+    printPart((*indexes)[0]);
+//    for(int i = 0; i < indexes->size(); i++){
+//        cout << (*indexes)[i] << endl;
+//    }
+}
+
+void Trabalho_3::printPart(int index){
+    int bottom = index - 20;
+    if(bottom < 0)
+        bottom = 0;
+    int top = index + 20;
+    if(top > last_character)
+        top = last_character;    
+    
+    ifstream file(name);
+    if(!file.is_open()){
+        cout << "Nenhum arquivo encontrado!" << endl;
+        return;
+    }
+    
+    string text = "";
+    string line;
+    int index_file = 0;
+    
+    while (getline(file, line)) {
+        for(int i = 0; i < line.size(); i++){
+            if(index_file >= bottom && index_file <= top){
+                text += line[i];
+            }
+            index_file++;
+        }
+        text += " ";
+    }
+    cout << "Parte do texto:\n" << text << endl;    
 }
 
 Trabalho_3::~Trabalho_3() {

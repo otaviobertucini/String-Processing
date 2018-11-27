@@ -5,7 +5,8 @@ int main() {
     Trabalho_3 trab;
     trab.readText("otavio.txt");
     
-    trab.printMap();
+    //trab.printMap();
+    trab.searchWord("nome");
     return 0;
 }
 
