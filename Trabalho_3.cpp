@@ -17,7 +17,8 @@ void Trabalho_3::readText(char* name) {
                 index++;
                 if (    (line[i] >= 48 && line[i] <= 57) || 
                         (line[i] >= 65 && line[i] <= 90) || 
-                        (line[i] >= 97 && line[i] <= 172)) {
+                        (line[i] >= 97 && line[i] <= 172)||
+                        (line[i] < 0)) {
                     last++;
                 } 
                 else {
@@ -78,9 +79,17 @@ void Trabalho_3::searchWord(string word){
     cout << "Número de ocorrências: " << indexes->size() << endl;
     cout << "Posição: " << (*indexes)[0] << endl;
     printPart((*indexes)[0]);
-//    for(int i = 0; i < indexes->size(); i++){
-//        cout << (*indexes)[i] << endl;
-//    }
+    for(int i = 0; i < indexes->size(); i++){
+        cout << (*indexes)[i] << endl;
+    }
+}
+
+void Trabalho_3::printWords(string txt){
+    ;
+    for(int i = 0; i < txt.size(); i++){
+        int value = txt[i];
+        cout << txt[i] << ": " << value << endl;
+    }
 }
 
 void Trabalho_3::printPart(int index){

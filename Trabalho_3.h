@@ -1,10 +1,14 @@
 #ifndef TRABALHO_3_H
 #define TRABALHO_3_H
 #include <string>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include <fstream>
 #include <iostream>
 #include <vector>
 #include <map>
+#include <sstream>
 using namespace std;
 using std::fstream;
 using std::ofstream;
@@ -20,6 +24,7 @@ public:
     void printMap();
     void searchWord(string word);
     void printPart(int index);
+    void printWords(string txt);
     virtual ~Trabalho_3();
 private:
     string text;

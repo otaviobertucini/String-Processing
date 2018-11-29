@@ -3,10 +3,13 @@
 
 int main() {
     Trabalho_3 trab;
-    trab.readText("otavio.txt");
+    trab.readText("Historia.txt");
     
-    //trab.printMap();
-    trab.searchWord(";");
+    string word;
+    cin >> word;
+    trab.searchWord(word);
+    //trab.printWords("façanhas");
     return 0;
 }
 
+//àáâãçéõôêó
