@@ -19,19 +19,20 @@ using std::endl;
 class Trabalho_3 {
 public:
     Trabalho_3();
-    void readText(char* name);
+    void readText(const char* name);
     void addWord(string word, int index);
     void printMap();
     void searchWord(string word);
     void printPart(int index);
     void printWords(string txt);
+    void menu();
     virtual ~Trabalho_3();
 private:
     string text;
     vector<std::string> strings;
     map<string, vector<int>* > inverted;
     int last_character;
-    char* name;
+    const char* name;
 };
 
 #endif /* TRABALHO_3_H */
