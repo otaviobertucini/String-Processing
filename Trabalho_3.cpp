@@ -1,6 +1,7 @@
 #include "Trabalho_3.h"
 
 Trabalho_3::Trabalho_3() {
+    tree_root = NULL;
 }
 
 void Trabalho_3::readText(const char* name) {
@@ -39,6 +40,7 @@ void Trabalho_3::readText(const char* name) {
         }
         last_character = index-1;
     }
+    makeNodes();
 }
 
 void Trabalho_3::addWord(string word, int index){
@@ -168,6 +170,51 @@ void Trabalho_3::menu(){
         if(cmd == 0)
             loop = 0;
     }
+}
+
+struct compareNodes{
+    bool operator()(Node* a, Node* b){return (a->n < b->n);}
+};
+
+void Trabalho_3::makeNodes(){
+    map<string, vector<int>*>::iterator itr;
+    for(itr = inverted.begin(); itr != inverted.end(); itr++){
+        nodes.push_back(new Node(itr->second->size(), itr->first));
+    }
+    sort(nodes.begin(), nodes.end(), compareNodes());
+    makeTree();
+}
+
+void Trabalho_3::makeTree(){
+    printNodes();
+    while(nodes.size() > 1){
+        Node* aux1 = nodes[0];
+        Node* aux2 = nodes[1];
+        nodes.push_back(new Node(aux1->n + aux2->n, "**", aux1, aux2));
+        sort(nodes.begin(), nodes.end(), compareNodes());
+        nodes.erase(nodes.begin(), nodes.begin()+2);
+        printNodes();
+    }
+    printTree(nodes[0]);
+    tree_root = nodes[0];
+}
+
+void Trabalho_3::printTree(Node* a){
+    if(a->isEnd())
+        cout << a->word << ", " << a->n << endl;
+    else{
+        cout << a->word << ", " << a->n << endl;
+        printTree(a->left);
+        printTree(a->right);
+    }    
+}
+
+void Trabalho_3::printNodes(){
+    cout << "---------------------------------" << endl;
+    for(int i = 0; i < nodes.size(); i++){
+        cout << nodes[i]->n << ", " << nodes[i]->word << endl;
+    }
+    cout << "---------------------------------" << endl;
 }
 
 Trabalho_3::~Trabalho_3() {

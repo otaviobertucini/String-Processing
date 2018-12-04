@@ -9,6 +9,7 @@
 #include <vector>
 #include <map>
 #include <sstream>
+#include "Node.h"
 using namespace std;
 using std::fstream;
 using std::ofstream;
@@ -26,6 +27,10 @@ public:
     void printPart(int index);
     void printWords(string txt);
     void menu();
+    void makeNodes();
+    void makeTree();
+    void printNodes();
+    void printTree(Node* a);
     virtual ~Trabalho_3();
 private:
     string text;
@@ -33,6 +38,8 @@ private:
     map<string, vector<int>* > inverted;
     int last_character;
     const char* name;
+    vector<Node*> nodes;
+    Node* tree_root;
 };
 
 #endif /* TRABALHO_3_H */
