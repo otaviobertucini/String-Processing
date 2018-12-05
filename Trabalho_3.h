@@ -31,11 +31,16 @@ public:
     void makeTree();
     void printNodes();
     void printTree(Node* a);
+    void createTable(Node* node, string bin);
+    void makeEncoding();
+    string getBinary(string word);
+    void printEncoding();
     virtual ~Trabalho_3();
 private:
     string text;
     vector<std::string> strings;
     map<string, vector<int>* > inverted;
+    map<string, string> table;
     int last_character;
     const char* name;
     vector<Node*> nodes;

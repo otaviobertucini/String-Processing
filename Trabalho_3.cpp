@@ -39,8 +39,7 @@ void Trabalho_3::readText(const char* name) {
             }
         }
         last_character = index-1;
-    }
-    makeNodes();
+    }    
 }
 
 void Trabalho_3::addWord(string word, int index){
@@ -150,7 +149,7 @@ void Trabalho_3::menu(){
     int cmd;
     while(loop){
         cout << "1 - Procurar palavra \n2 - Arquivo invertido "
-                "\n3 - Novo arquivo \n0 - Sair "
+                "\n3 - Novo arquivo \n4 - Codificar \n0 - Sair "
                 << endl;
         cin >> cmd;
         if(cmd == 1){
@@ -167,6 +166,13 @@ void Trabalho_3::menu(){
             cin >> name;
             readText(name.c_str());
         }            
+        if(cmd == 4){
+            makeNodes();
+            makeTree();
+            createTable(tree_root, "");
+            makeEncoding();
+            printEncoding();
+        }
         if(cmd == 0)
             loop = 0;
     }
@@ -181,22 +187,27 @@ void Trabalho_3::makeNodes(){
     for(itr = inverted.begin(); itr != inverted.end(); itr++){
         nodes.push_back(new Node(itr->second->size(), itr->first));
     }
-    sort(nodes.begin(), nodes.end(), compareNodes());
-    makeTree();
+    sort(nodes.begin(), nodes.end(), compareNodes());    
 }
 
 void Trabalho_3::makeTree(){
-    printNodes();
     while(nodes.size() > 1){
         Node* aux1 = nodes[0];
         Node* aux2 = nodes[1];
         nodes.push_back(new Node(aux1->n + aux2->n, "**", aux1, aux2));
         sort(nodes.begin(), nodes.end(), compareNodes());
         nodes.erase(nodes.begin(), nodes.begin()+2);
-        printNodes();
     }
-    printTree(nodes[0]);
-    tree_root = nodes[0];
+    tree_root = nodes[0];    
+}
+
+void Trabalho_3::createTable(Node* node, string bin){
+    if(node->isEnd())
+        table.insert(make_pair(node->word, bin));
+    else{
+        createTable(node->left, bin + "0");
+        createTable(node->right, bin + "1");
+    }    
 }
 
 void Trabalho_3::printTree(Node* a){
@@ -215,6 +226,62 @@ void Trabalho_3::printNodes(){
         cout << nodes[i]->n << ", " << nodes[i]->word << endl;
     }
     cout << "---------------------------------" << endl;
+}
+
+void Trabalho_3::makeEncoding() {
+    ifstream file(name);
+    ofstream dest("encoding.txt");
+    if (file.is_open()) {
+        std::string line;
+        int index = -1;
+        int i;
+        while (getline(file, line)) {
+            int first = 0;
+            int last = 0;
+            for (i = 0; i < line.size() + 1; i++) { 
+                index++;
+                if (    (line[i] >= 48 && line[i] <= 57) || 
+                        (line[i] >= 65 && line[i] <= 90) || 
+                        (line[i] >= 97 && line[i] <= 172)) {
+                    last++;
+                } 
+                else {
+                    std::string copy = line.substr(first, last);
+                    if(copy[0] != 32 && copy[0] != 0){
+                        string bin = getBinary(copy);
+                        dest << bin;
+                    }
+                    copy.clear();
+                    first = i + 1;
+                    last = 0;
+                    if(line[i] != 0 && line[i] != 32){
+                        string aux;
+                        aux = line[i];
+                        string bin = getBinary(aux);
+                        dest << bin;
+                    }
+                }
+            }
+        }
+        last_character = index-1;
+    }
+}
+
+string Trabalho_3::getBinary(string word){
+    try{
+        table.at(word);
+    }
+    catch(out_of_range){
+        return "";
+    }    
+    return table.at(word);
+}
+
+void Trabalho_3::printEncoding(){
+    ifstream file("encoding.txt");
+    string encoding;
+    getline(file, encoding);
+    cout << encoding << endl;
 }
 
 Trabalho_3::~Trabalho_3() {
